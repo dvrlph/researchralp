@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Message</title>
+    
+    <!-- Prevent preview text from showing -->
+    <meta name="description" content="">
+    <meta property="og:title" content="A Special Message">
+    <meta property="og:description" content="">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="A Special Message">
+    <meta name="twitter:description" content="">
+    
+    <style>
+        :root {
+            --bg-red: #a61d24;
+            --accent-beige: #d4b2a7;
+            --text-cream: #fdf5e6;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-red);
+            /* iOS System Font */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            flex-direction: column;
+            text-align: center;
+            overflow-x: hidden;
+            color: var(--text-cream);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .gif-container {
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: inherit;
+        }
+
+        #yesBtn {
+            background-color: var(--accent-beige);
+            color: #5a1115;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        #noBtn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        #letterWrapper {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+            animation: slideUpFade 1s ease forwards;
+        }
+
+        .letter-paper {
+            background-color: #fdf5e6;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.4);
+            color: #1c1c1e;
+            text-align: left;
+            position: relative;
+        }
+
+        .letter-header {
+            font-weight: 700;
+            font-size: 2.2rem;
+            color: var(--text-cream); /* Header color on red bg */
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .letter-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 400;
+            min-height: 150px;
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background-color: var(--bg-red);
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .letter-header { font-size: 1.8rem; }
+            .letter-paper { padding: 30px; }
+            .letter-text { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContent">
+        <div class="gif-container" id="gifContainer">
+            <div class="tenor-gif-embed" data-postid="8444999958589952534" data-share-method="host" data-aspect-ratio="0.964444" data-width="100%">
+                <a href="https://tenor.com/view/nailong-gif-8444999958589952534">Nailong GIF</a>
+            </div>
+        </div>
+
+        <h1 id="question">Will you be my Valentine?</h1>
+
+        <div class="buttons" id="buttonGroup">
+            <button id="yesBtn" onclick="acceptProposal()">YES</button>
+            <button id="noBtn" onclick="rejectProposal()">NO</button>
+        </div>
+    </div>
+
+    <div id="letterWrapper">
+        <h2 class="letter-header">hi antoniette :)</h2>
+        <div class="letter-paper">
+            <div class="letter-text" id="typewriterText"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    <script>
+        let noClickCount = 0;
+        const noTexts = ["No", "Are you sure?", "Really sure?", "Pookie please..."];
+        
+        const gifEmbeds = {
+            firstNo: '<div class="tenor-gif-embed" data-postid="17297084271313304594" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>',
+            secondNo: '<div class="tenor-gif-embed" data-postid="8404420301845100200" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>',
+            finalNo: '<div class="tenor-gif-embed" data-postid="13909271765107879892" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>',
+            yes: '<div class="tenor-gif-embed" data-postid="15649134662017671874" data-share-method="host" data-aspect-ratio="1.245" data-width="100%"></div>'
+        };
+
+        const message = "I know things didn't go right between us before, and I take responsibility for my part in that. I rushed things when I should have been more patient. What I never really said is that ever since we met, I've had real feelings for you. Since the first day of class way back in grade 11. You are very captivating promise the way you smile makes me melt everytime and i still feel the same way. I'm not asking for anything big, just a chance to start again, slower and with more respect. If you're open to it, I'd like to get to know you properly this time. And if wala na gyud, I'll understand and respect your decision.";
+
+        function updateGif(embedHTML) {
+            const container = document.getElementById('gifContainer');
+            container.innerHTML = embedHTML;
+            const script = document.createElement('script');
+            script.src = 'https://tenor.com/embed.js';
+            script.async = true;
+            document.body.appendChild(script);
+        }
+
+        function rejectProposal() {
+            noClickCount++;
+            if (noClickCount >= 4) {
+                document.getElementById("question").innerText = "alright di tika mapugos have a wonderful day";
+                document.getElementById("buttonGroup").classList.add("hidden");
+                updateGif(gifEmbeds.finalNo);
+                return;
+            }
+
+            const yesBtn = document.getElementById("yesBtn");
+            const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = `${currentSize * 1.4}px`;
+            
+            const noBtn = document.getElementById("noBtn");
+            if (noClickCount < noTexts.length) noBtn.innerText = noTexts[noClickCount];
+
+            if (noClickCount === 1) updateGif(gifEmbeds.firstNo);
+            else if (noClickCount === 2) updateGif(gifEmbeds.secondNo);
+            else if (noClickCount === 3) updateGif(gifEmbeds.finalNo);
+        }
+
+        function typeWriter(text, i) {
+            if (i < text.length) {
+                document.getElementById("typewriterText").innerHTML = text.substring(0, i+1) + '<span class="typing-cursor"></span>';
+                setTimeout(function() {
+                    typeWriter(text, i + 1)
+                }, 35);
+            } else {
+                const cursor = document.querySelector(".typing-cursor");
+                if (cursor) cursor.style.display = "none";
+            }
+        }
+
+        function acceptProposal() {
+            document.getElementById("mainContent").style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById("mainContent").classList.add("hidden");
+                document.getElementById("letterWrapper").style.display = "block";
+                updateGif(gifEmbeds.yes);
+                typeWriter(message, 0);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
